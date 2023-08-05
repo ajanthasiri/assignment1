@@ -59,9 +59,6 @@ https://templatemo.com/tm-564-plot-listing
             <!-- ***** Menu Start ***** -->
             <ul class="nav">
               <li><a href="index.html">Home</a></li>
-              <li><a href="category.html">Category</a></li>
-              <li><a href="listing.html" class="active">Listing</a></li>
-              <li><a href="contact.html">Contact Us</a></li> 
               <li><div class="main-white-button"><a href="#"><i class="fa fa-plus"></i> Add Your Listing</a></div></li> 
             </ul>        
             <a class='menu-trigger'>
@@ -175,7 +172,7 @@ https://templatemo.com/tm-564-plot-listing
 									'<a href="#"><img src="assets/images/job.jpg" alt=""></a>'+
 									'<div class="hover-content">'+
 										'<div class="main-white-button">'+
-											'<a href="contact.html"><i class="fa fa-eye"></i> Apply Now</a>'+
+											'<a onclick="apply(`'+job.id+'`,`'+job.title+'`)"><i class="fa fa-eye"></i> Apply Now</a>'+
 										'</div>'+
 									'</div>'+
 								'</div>'+
@@ -191,6 +188,12 @@ https://templatemo.com/tm-564-plot-listing
 		});
 		$("#list").html(jobList);
 	});
+
+	function apply(jobId, jobTitle) {
+		localStorage.setItem('jobId', jobId);
+		localStorage.setItem('jobTitle', jobTitle);
+		window.location.href = "apply.html";
+	}
 </script>
 
 </body>
