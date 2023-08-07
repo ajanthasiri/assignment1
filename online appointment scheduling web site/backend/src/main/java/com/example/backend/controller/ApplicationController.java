@@ -12,8 +12,12 @@ import com.example.backend.service.ApplicationService;
 import com.example.backend.service.JobSeekerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -106,9 +110,14 @@ public class ApplicationController {
     }
 
     @PostMapping("/apply")
-    public String apply(@RequestBody Application application){
-        jobSeekerService.saveJobSeeker(application.getJobSeeker());
-        applicationService.saveApplication(application);
+    public String apply(@RequestParam(name = "jobId") String jobId,
+                           @RequestParam(name = "name") String name,
+                           @RequestParam(name = "email") String email,
+                           @RequestParam(name = "country") String country,
+                           @RequestParam(name = "dob") LocalDate dob,
+                           @RequestParam(name = "cv") MultipartFile cv) throws IOException {
+        JobSeeker jobSeeker = jobSeekerService.saveJobSeeker(name, email, country, dob, cv);
+        applicationService.saveApplication(jobRepository.findById(Long.parseLong(jobId)).get(), jobSeeker);
         return "Application saved successfully";
     }
 }

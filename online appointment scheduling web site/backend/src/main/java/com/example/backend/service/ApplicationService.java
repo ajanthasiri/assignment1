@@ -1,6 +1,8 @@
 package com.example.backend.service;
 
 import com.example.backend.entity.Application;
+import com.example.backend.entity.Job;
+import com.example.backend.entity.JobSeeker;
 import com.example.backend.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,10 @@ public class ApplicationService {
     @Autowired
     private ApplicationRepository applicationRepository;
 
-    public void saveApplication(Application application){
+    public void saveApplication(Job job, JobSeeker jobSeeker){
+        Application application = new Application();
+        application.setJob(job);
+        application.setJobSeeker(jobSeeker);
         applicationRepository.save(application);
     }
 }
