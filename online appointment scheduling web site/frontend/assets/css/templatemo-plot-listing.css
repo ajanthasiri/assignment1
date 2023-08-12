@@ -724,7 +724,10 @@ Banner Style
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url(../images/banner-bg.jpg);
+  background: linear-gradient(rgba(78, 78, 78, 0.6), rgba(94, 92, 92, 0.6)), url("../images/banner-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   padding: 290px 0px 180px 0px;
   position: relative;
   overflow: hidden;
@@ -1341,7 +1344,10 @@ Page Heading
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  background-image: url(../images/heading-bg.jpg);
+  background: linear-gradient(rgba(78, 78, 78, 0.6), rgba(94, 92, 92, 0.6)), url("../images/heading-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   padding: 230px 0px 120px 0px;
   position: relative;
   overflow: hidden;

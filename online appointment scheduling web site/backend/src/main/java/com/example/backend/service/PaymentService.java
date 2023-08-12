@@ -10,6 +10,6 @@ public class PaymentService {
     private EmailSenderService emailSenderService;
 
     public void pay(PaymentDTO paymentDTO){
-        emailSenderService.sendEmail(paymentDTO.getEmail(), "Payment for JobList", "Your appointment is successfully placed....");
+        emailSenderService.sendEmail(paymentDTO.getEmail(), "Payment for JobList", "Your appointment is successfully placed in JobList....");
     }
 }

@@ -180,6 +180,7 @@ https://templatemo.com/tm-564-plot-listing
 	<script src="assets/js/animation.js"></script>
 	<script src="assets/js/imagesloaded.js"></script>
 	<script src="assets/js/custom.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 	<script>
 		$(document).ready(function () {
@@ -197,7 +198,7 @@ https://templatemo.com/tm-564-plot-listing
 						   $("#cvc").val() == "" ||
 						   $("#expireDate").val() == "";
 				if(notValid){
-					alert("Please fill all details");
+					Swal.fire('Please fill all details', '', 'warning');
 					return;
 				}
 
@@ -216,17 +217,17 @@ https://templatemo.com/tm-564-plot-listing
 					processData: false,
 					contentType: false,
 					success: function(response){
-						alert(response);
+						Swal.fire(response, '', 'success');
 						localStorage.setItem('jobs', "");
 						localStorage.setItem('consultant', "");
 						localStorage.setItem('jobId', "");
 						localStorage.setItem('jobTitle', "");
 						localStorage.setItem('email', "");
 						localStorage.setItem('name', "");
-						window.location.href = "index.html";
+						setInterval(function(){ window.location.href = "index.html"; }, 2000);
 					},
 					error: function(){
-						alert('failure');
+						Swal.fire('Failure...', '', 'error');
 					}
 				});
 			});
