@@ -1,6 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.entity.Application;
+import com.example.backend.dto.ApplicationDTO;
 import com.example.backend.entity.Consultant;
 import com.example.backend.entity.Job;
 import com.example.backend.entity.JobSeeker;
@@ -11,13 +11,11 @@ import com.example.backend.repository.JobSeekerRepository;
 import com.example.backend.service.ApplicationService;
 import com.example.backend.service.JobSeekerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -109,15 +107,11 @@ public class ApplicationController {
         return "Welcome!";
     }
 
-    @PostMapping("/apply")
-    public String apply(@RequestParam(name = "jobId") String jobId,
-                           @RequestParam(name = "name") String name,
-                           @RequestParam(name = "email") String email,
-                           @RequestParam(name = "country") String country,
-                           @RequestParam(name = "dob") LocalDate dob,
-                           @RequestParam(name = "cv") MultipartFile cv) throws IOException {
-        JobSeeker jobSeeker = jobSeekerService.saveJobSeeker(name, email, country, dob, cv);
-        applicationService.saveApplication(jobRepository.findById(Long.parseLong(jobId)).get(), jobSeeker);
+    @PostMapping(path = "/apply", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public String apply(@ModelAttribute ApplicationDTO applicationDTO) throws IOException {
+        System.out.println(applicationDTO.getName());
+        JobSeeker jobSeeker = jobSeekerService.saveJobSeeker(applicationDTO);
+        applicationService.saveApplication(jobRepository.findById(Long.parseLong(applicationDTO.getJobId())).get(), jobSeeker, applicationDTO.getAppointmentDate());
         return "Application saved successfully";
     }
 }

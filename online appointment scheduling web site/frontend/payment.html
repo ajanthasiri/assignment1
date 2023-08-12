@@ -17,6 +17,7 @@
 	<!-- Bootstrap core CSS -->
 	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
+
 	<!-- Additional CSS Files -->
 	<link rel="stylesheet" href="assets/css/fontawesome.css">
 	<link rel="stylesheet" href="assets/css/templatemo-plot-listing.css">
@@ -58,7 +59,7 @@ https://templatemo.com/tm-564-plot-listing
 						<!-- ***** Logo End ***** -->
 						<!-- ***** Menu Start ***** -->
 						<ul class="nav">
-							<li><a href="index.html" class="active">Home</a></li>
+							<li><a href="index.html">Home</a></li>
 							<li>
 								<div class="main-white-button"><a href="#"><i class="fa fa-plus"></i> Add Your
 										Listing</a></div>
@@ -75,58 +76,70 @@ https://templatemo.com/tm-564-plot-listing
 	</header>
 	<!-- ***** Header Area End ***** -->
 
-	<div class="main-banner">
+	<div class="page-heading">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-12">
+				<div class="col-lg-8">
 					<div class="top-text header-text">
-						<h6>Over 36,500+ Active Listings</h6>
-						<h2>Find Your Dream Job</h2>
+						<h6>Fill payment details</h6>
+						<h2>Payment</h2>
 					</div>
-				</div>
-				<div class="col-lg-12">
-					<form id="search-form">
-						<div class="row">
-							<div class="col-lg-3 align-self-center">
-								<fieldset>
-									<select id="consultant">
-									</select>
-								</fieldset>
-							</div>
-							<div class="col-lg-3 align-self-center">
-								<fieldset>
-									<select id="specialization">
-										<option selected>Select Specialization</option>
-										<option value="Financial">Financial</option>
-										<option value="Education">Education</option>
-										<option value="Marketing">Marketing</option>
-										<option value="Software">Software</option>
-									</select>
-								</fieldset>
-							</div>
-							<div class="col-lg-3 align-self-center">
-								<fieldset>
-									<select id="country">
-										<option selected>Select Country</option>
-										<option value="Sri Lanka">Sri Lanka</option>
-										<option value="USA">USA</option>
-										<option value="UK">UK</option>
-										<option value="France">France</option>
-									</select>
-								</fieldset>
-							</div>
-							<div class="col-lg-3">
-								<fieldset>
-									<button id="find" class="main-button"><i class="fa fa-search"></i> Check Available Jobs</button>
-								</fieldset>
-							</div>
-						</div>
-					</form>
 				</div>
 			</div>
 		</div>
 	</div>
 
+	<div class="contact-page">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="inner-content">
+						<div class="row">
+							<div class="col-lg-12 align-self-center">
+								<form id="contact" action="" method="post" enctype="multipart/form-data"><br>
+									<div class="row"><br>
+										<table>
+											<tr>
+												<th>Your Name :</th>
+												<td><input type="text" name="name" id="name" placeholder="Your Name"
+														autocomplete="on" readonly></td>
+											</tr>
+											<input type="hidden" name="email" id="email" readonly>
+											<tr>
+												<th>Card Number :</th>
+												<td><input type="text" name="cardNumber" id="cardNumber" placeholder="Card Number"
+														autocomplete="off" required>
+												</td>
+											</tr>
+											
+											<tr>
+												<th>CVC :</th>
+												<td><input type="text" name="cvc" id="cvc" placeholder="CVC"
+														autocomplete="off" required></td>
+											</tr>
+
+											<tr>
+												<th>Expire Date :</th>
+												<td><input type="date" name="expireDate" id="expireDate" placeholder="Expire Date"
+														autocomplete="off" required></td>
+											</tr>
+										</table>
+										<div class="col-lg-12">
+											<fieldset>
+												<button type="submit" id="submit" class="main-button "><i
+														class="fa fa-credit-card"></i> Pay $30</button>
+											</fieldset>
+										</div>
+										<br><br><br>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<footer>
 		<div class="container">
@@ -167,32 +180,57 @@ https://templatemo.com/tm-564-plot-listing
 	<script src="assets/js/animation.js"></script>
 	<script src="assets/js/imagesloaded.js"></script>
 	<script src="assets/js/custom.js"></script>
+
 	<script>
-		$(document).ready(function(){
-			$.get("http://127.0.0.1:8080/getConsultants", function(data, status){
-				let consultants = "<option selected>Select Consultant</option>";
-				data.forEach((consultant) =>{
-					consultants += '<option value="'+consultant.id+'">'+consultant.name+'</option>';
-				});
-				$("#consultant").html(consultants);
-			});
+		$(document).ready(function () {
+			var name = localStorage.getItem('name');
+			var email = localStorage.getItem('email');
+			$("#name").val(name);
+			$("#email").val(email);
 		});
 
-		$("#find").click(function(){
-			$("#search-form").submit(false);
-			let consultant = $("#consultant").val();
-			let specialization = $("#specialization").val();
-			let country = $("#country").val();
-			$.post('http://127.0.0.1:8080/findJobs', {
-				consultant: consultant,
-				specialization: specialization,
-				country: country
-			}, function(response){
-				localStorage.setItem('jobs', JSON.stringify(response));
-				localStorage.setItem('consultant', $("#consultant option:selected").text());
-				window.location.href = "listing.html";
+		$(function() {
+			$('button[type=submit]').click(function (event) {
+				event.preventDefault();
+
+				let notValid = $("#cardNumber").val() == "" ||
+						   $("#cvc").val() == "" ||
+						   $("#expireDate").val() == "";
+				if(notValid){
+					alert("Please fill all details");
+					return;
+				}
+
+				// retrieve form element
+				var form = this.form;
+				// prepare data
+				var data = new FormData(form);
+				// get url
+				var url = 'http://127.0.0.1:8080/pay';
+
+				// send request
+				$.ajax({
+					type: 'POST',
+					url: url,
+					data: data,
+					processData: false,
+					contentType: false,
+					success: function(response){
+						alert(response);
+						localStorage.setItem('jobs', "");
+						localStorage.setItem('consultant', "");
+						localStorage.setItem('jobId', "");
+						localStorage.setItem('jobTitle', "");
+						localStorage.setItem('email', "");
+						localStorage.setItem('name', "");
+						window.location.href = "index.html";
+					},
+					error: function(){
+						alert('failure');
+					}
+				});
 			});
-		  });
+		});
 	</script>
 
 </body>
